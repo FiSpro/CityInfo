@@ -18,6 +18,12 @@ namespace CityInfo.API.Controllers
             _fileExtensionContentTypeProvider = fileExtensionContentTypeProvider
                 ?? throw new System.ArgumentNullException(nameof(fileExtensionContentTypeProvider));
         }
+
+        /// <summary>
+        /// Download and read a file
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
         [HttpGet("{fileId}")]
         public ActionResult GetFile(string fileId)
         {

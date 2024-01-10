@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CityInfo.API.Controllers
 {
-    [Route("api/cities/{cityId}/pointsOfInterest")]
+    [Route("api/v{version:apiVersion}/cities/{cityId}/pointsOfInterest")]
     [Authorize(Policy = "MustBeFromOhrid")]
+    [ApiVersion("2.0")]
     [ApiController]
     public class PointsOfInterestController : ControllerBase
     {
@@ -27,6 +28,11 @@ namespace CityInfo.API.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        /// <summary>
+        /// Get all points of interest for a city
+        /// </summary>
+        /// <param name="cityId">The id of the city to get the points of interest for</param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PointOfInterestDto>>> GetPointsOfInterest(int cityId)
         {
@@ -49,6 +55,12 @@ namespace CityInfo.API.Controllers
             return Ok(_mapper.Map<IEnumerable<PointOfInterestDto>>(pointsOfInterestForCity));
         }
 
+        /// <summary>
+        /// Get a specific point of interest of a city
+        /// </summary>
+        /// <param name="cityId">The id of the city to get the point of interest for</param>
+        /// <param name="pointOfInterestId">The id of the point of interest for that specific city</param>
+        /// <returns></returns>
         [HttpGet("{pointOfInterestId}", Name = "GetPointOfInterest")]
         public async Task<ActionResult<PointOfInterestDto>> GetPointOfInterest(int cityId, int pointOfInterestId)
         {
@@ -67,6 +79,12 @@ namespace CityInfo.API.Controllers
             return Ok(_mapper.Map<PointOfInterestDto>(pointOfInterest));
         }
 
+        /// <summary>
+        /// Create a new point of interest for a city
+        /// </summary>
+        /// <param name="cityId">The id of the city to create the point of interest for</param>
+        /// <param name="pointOfInterest">The id for the new point of interest</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<PointOfInterestDto>> CreatePointOfInterest(
             int cityId, PointOfInterestForCreationDto pointOfInterest)
@@ -93,6 +111,13 @@ namespace CityInfo.API.Controllers
             createdPointOfInterestToReturn);
         }
 
+        /// <summary>
+        /// Update a point of interest
+        /// </summary>
+        /// <param name="cityId">The id of the city to update the point of interest for</param>
+        /// <param name="pointOfInterestId">The id of the point of interest to be updated</param>
+        /// <param name="pointOfInterest">The updated point of interest</param>
+        /// <returns></returns>
         [HttpPut("{pointOfInterestId}")]
         public async Task<ActionResult> UpdatePointOfInterest(int cityId, int pointOfInterestId,
             PointOfInterestForUpdateDto pointOfInterest)
@@ -116,6 +141,13 @@ namespace CityInfo.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Partially update a point of interest
+        /// </summary>
+        /// <param name="cityId">The id of the city to update the point of interest for</param>
+        /// <param name="pointOfInterestId">The id of the point of interest to be updated</param>
+        /// <param name="patchDocument"></param>
+        /// <returns></returns>
         [HttpPatch("{pointOfInterestId}")]
         public async Task<ActionResult> PartiallyUpdatePointOfInterest(
             int cityId, int pointOfInterestId,
@@ -154,6 +186,12 @@ namespace CityInfo.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete a point of interest
+        /// </summary>
+        /// <param name="cityId">The id of the city to delete a point of interest for</param>
+        /// <param name="pointOfInterestId">The id of the point of interest to be deleted</param>
+        /// <returns></returns>
         [HttpDelete("{pointOfInterestId}")]
         public async Task<ActionResult> DeletePointOfInterest(int cityId, int pointOfInterestId)
         {
